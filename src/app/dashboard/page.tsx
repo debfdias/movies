@@ -8,7 +8,7 @@ type Movie = {
   id: string;
   title: string;
   year: number;
-  imageUrl: string | null;
+  posterUrl: string | null;
 };
 
 export default function DashboardPage() {
@@ -75,10 +75,11 @@ export default function DashboardPage() {
               <div
                 key={movie.id}
                 className="bg-white rounded-lg shadow overflow-hidden"
+                onClick={() => router.push(`/movies/${movie.id}`)}
               >
-                {movie.imageUrl && (
+                {movie.posterUrl && (
                   <img
-                    src={movie.imageUrl}
+                    src={movie.posterUrl}
                     alt={movie.title}
                     className="w-full h-48 object-cover"
                   />
