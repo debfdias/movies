@@ -79,7 +79,7 @@ export default function DashboardPage() {
           </h1>
           <button
             onClick={() => signOut()}
-            className="flex items-center cursor-pointer gap-4 hover:text-[#2BD17E]"
+            className="flex items-center cursor-pointer gap-4 hover:text-red-400"
           >
             Logout
             <FiLogOut className="w-5 h-5" />

@@ -17,10 +17,9 @@ export default function MovieCard({ movie }: MovieCardProps) {
   return (
     <div
       onClick={() => router.push(`/movies/${movie.id}`)}
-      className="group cursor-pointer transition-all duration-200 hover:scale-105 bg-[#092C39] p-2 rounded-lg hover:bg-[#092C39]"
+      className="group cursor-pointer transition-all duration-200 hover:scale-105 bg-[#092C39] p-2 rounded-lg hover:bg-[#092C39] "
     >
-      {/* Card container with 4:5 aspect ratio */}
-      <div className="relative aspect-[4/5] rounded-lg overflow-hidden shadow-lg bg-gray-100">
+      <div className="relative aspect-[4/5] rounded-lg overflow-hidden shadow-lg bg-gray-100 hover:border-[#2BD17E] hover:border-2">
         {movie.posterUrl ? (
           <img
             src={movie.posterUrl}

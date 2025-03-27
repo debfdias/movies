@@ -155,7 +155,7 @@ export default function EditMoviePage({
                   <button
                     type="button"
                     onClick={() => router.push("/dashboard")}
-                    className="cursor-pointer flex-1 px-4 py-2 sm:px-6 sm:py-3 border border-white text-white rounded-lg hover:border-[#2BD17E] hover:text-[#2BD17E] text-base sm:text-lg font-medium transition-colors"
+                    className="cursor-pointer flex-1 px-4 py-2 sm:px-6 sm:py-3 border-2 border-white text-white rounded-lg hover:border-[#2BD17E] hover:text-[#2BD17E] text-base sm:text-lg font-medium transition-colors"
                     disabled={isSubmitting}
                   >
                     Cancel
