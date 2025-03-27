@@ -4,6 +4,7 @@ import { use } from "react";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import MovieFormSkeleton from "@/components/MovieFormSkeleton";
+import Image from "next/image";
 
 export default function EditMoviePage({
   params,
@@ -77,11 +78,16 @@ export default function EditMoviePage({
           <div className="w-full md:w-1/2 p-4 sm:p-6 bg-white border-b md:border-b-0 md:border-r border-gray-700">
             <div className="h-64 sm:h-80 md:h-full w-full flex items-center justify-center shadow-lg rounded-lg border-2 border-gray-300 overflow-hidden bg-gray-200 p-2 sm:p-4">
               {imageUrl ? (
-                <img
-                  src={imageUrl}
-                  alt="Movie poster"
-                  className="h-full w-full object-cover rounded-lg"
-                />
+                <div className="relative h-full w-full">
+                  <Image
+                    src={imageUrl}
+                    alt="Movie poster preview"
+                    fill
+                    className="object-cover rounded-lg"
+                    priority
+                    unoptimized={true}
+                  />
+                </div>
               ) : (
                 <div className="w-full h-full flex items-center justify-center">
                   <span className="text-gray-500">No poster available</span>

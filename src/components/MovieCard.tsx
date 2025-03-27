@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 type MovieCardProps = {
   movie: {
@@ -21,10 +22,12 @@ export default function MovieCard({ movie }: MovieCardProps) {
     >
       <div className="relative aspect-[4/5] rounded-lg overflow-hidden shadow-lg bg-gray-100 hover:border-[#2BD17E] hover:border-2">
         {movie.posterUrl ? (
-          <img
+          <Image
             src={movie.posterUrl}
             alt={movie.title}
-            className="absolute inset-0 w-full h-full object-cover"
+            fill
+            className="object-cover"
+            unoptimized={true} // Only if you don't need Next.js image optimization
           />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center bg-gray-200">

@@ -93,6 +93,7 @@ export default function AddMoviePage() {
                     fill
                     className="object-cover rounded-lg"
                     priority
+                    unoptimized={true}
                   />
                 </div>
               ) : (
