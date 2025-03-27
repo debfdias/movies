@@ -3,7 +3,6 @@
 import { use } from "react";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
-import { useSession } from "next-auth/react";
 
 export default function EditMoviePage({
   params,
@@ -16,7 +15,6 @@ export default function EditMoviePage({
   const [year, setYear] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { data: session } = useSession();
   const router = useRouter();
 
   useEffect(() => {
