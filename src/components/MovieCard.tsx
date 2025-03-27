@@ -17,7 +17,7 @@ export default function MovieCard({ movie }: MovieCardProps) {
   return (
     <div
       onClick={() => router.push(`/movies/${movie.id}`)}
-      className="group cursor-pointer transition-all duration-200 hover:scale-105"
+      className="group cursor-pointer transition-all duration-200 hover:scale-105 bg-[#092C39] p-2 rounded-lg hover:bg-[#092C39]"
     >
       {/* Card container with 4:5 aspect ratio */}
       <div className="relative aspect-[4/5] rounded-lg overflow-hidden shadow-lg bg-gray-100">
@@ -33,14 +33,12 @@ export default function MovieCard({ movie }: MovieCardProps) {
           </div>
         )}
 
-        {/* Gradient overlay at bottom */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       </div>
 
-      {/* Text info below card */}
-      <div className="mt-2">
-        <h3 className="font-semibold text-lg truncate">{movie.title}</h3>
-        <p className="text-gray-600">{movie.publishingYear}</p>
+      <div className="mt-2 py-4">
+        <h3 className="font-semibold text-2xl truncate mb-4">{movie.title}</h3>
+        <p className="font-light">{movie.publishingYear}</p>
       </div>
     </div>
   );

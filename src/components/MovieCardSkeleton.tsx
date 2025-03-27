@@ -3,7 +3,7 @@ import React from "react";
 export default function MovieCardSkeleton() {
   return (
     <div className="animate-pulse">
-      <div className="relative aspect-[4/5] rounded-lg overflow-hidden shadow-lg bg-gray-200">
+      <div className="relative aspect-[9/13] rounded-lg overflow-hidden shadow-lg bg-gray-200">
         <div className="absolute inset-0 bg-[#1b5c74]" />
       </div>
 

@@ -29,23 +29,42 @@ export async function POST(req: Request) {
   }
 }
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
     const session = await getServerSession(authOptions);
     if (!session?.user?.id) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const movies = await prisma.movie.findMany({
-      where: {
-        userId: session.user.id,
-      },
-      orderBy: {
-        createdAt: "desc",
-      },
-    });
+    const { searchParams } = new URL(request.url);
+    const page = parseInt(searchParams.get("page") || "1");
+    const limit = parseInt(searchParams.get("limit") || "8");
+    const skip = (page - 1) * limit;
 
-    return NextResponse.json(movies);
+    const [movies, totalCount] = await Promise.all([
+      prisma.movie.findMany({
+        where: {
+          userId: session.user.id,
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+        skip,
+        take: limit,
+      }),
+      prisma.movie.count({
+        where: {
+          userId: session.user.id,
+        },
+      }),
+    ]);
+
+    return NextResponse.json({
+      movies,
+      totalCount,
+      totalPages: Math.ceil(totalCount / limit),
+      currentPage: page,
+    });
   } catch (error) {
     console.error("[MOVIES_GET]", error);
     return new NextResponse("Internal Error", { status: 500 });
