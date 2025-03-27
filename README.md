@@ -1,36 +1,54 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🎬 CineAI - Smart Movie Tracker & Recommender
 
-## Getting Started
+![Screenshot 2025-03-27 at 17 31 36](https://github.com/user-attachments/assets/f0eec018-0ccb-425a-86bb-016cca5bb3bc)
 
-First, run the development server:
+A Next.js 15 application that helps users store their favorite movies and get AI-powered recommendations. Built with cutting-edge technologies for a seamless experience.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## ✨ Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **AI-Powered Recommendations** - Get personalized movie suggestions using OpenAI
+- **Favorite Movie Storage** - Save all your favorite films in one place
+- **Beautiful UI** - Modern interface with Tailwind CSS
+- **Real Database** - PostgreSQL via Supabase with Prisma ORM
+- **Responsive Design** - Works on all devices
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🛠 Tech Stack
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Framework**: Next.js 15 (App Router)
+- **Database**: PostgreSQL (hosted on Supabase)
+- **ORM**: Prisma
+- **Styling**: Tailwind CSS
+- **AI**: OpenAI API
+- **Authentication**: Supabase Auth
+- **Deployment**: Vercel (recommended)
 
-## Learn More
+## 🚀 Getting Started
 
-To learn more about Next.js, take a look at the following resources:
+### Prerequisites
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Node.js 18+
+- PostgreSQL database
+- Supabase account
+- OpenAI API key
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Installation
 
-## Deploy on Vercel
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/cineai.git
+   cd cineai
+2. Install dependecies:
+   ```bash
+   npm install
+3. Clone the repository:
+   ```bash
+   cp .env.example .env.local
+4. Setup database:
+   ```bash
+   npx prisma migrate dev --name init
+5. Run!
+   ```bash
+   npm run dev
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+🎥 Made with ❤️ by Debs
