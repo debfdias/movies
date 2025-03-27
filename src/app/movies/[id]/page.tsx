@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import MovieFormSkeleton from "@/components/MovieFormSkeleton";
 import Image from "next/image";
+import RecommendationsCarousel from "@/components/Recommendations";
 
 export default function EditMoviePage({
   params,
@@ -72,7 +73,7 @@ export default function EditMoviePage({
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-2 sm:p-4">
+    <div className="min-h-screen flex flex-col items-center justify-center p-2 sm:p-4">
       <div className="max-w-5xl w-full rounded-xl shadow-2xl overflow-hidden">
         <div className="flex flex-col md:flex-row h-auto md:h-[600px]">
           <div className="w-full md:w-1/2 p-4 sm:p-6 bg-white border-b md:border-b-0 md:border-r border-gray-700">
@@ -177,6 +178,13 @@ export default function EditMoviePage({
             </form>
           </div>
         </div>
+      </div>
+
+      <div className="max-w-5xl w-full mt-8">
+        <RecommendationsCarousel
+          currentMovieTitle={title}
+          currentMovieId={id}
+        />
       </div>
     </div>
   );
