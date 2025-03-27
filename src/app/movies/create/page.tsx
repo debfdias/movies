@@ -19,26 +19,9 @@ export default function AddMoviePage() {
     setIsSubmitting(true);
 
     try {
-      console.log(image);
       // First upload image if exists
       const imageUrl =
         "https://cdn.displate.com/artwork/270x380/2024-09-23/fb35d1fc-74ea-4b87-9aa3-a076e4188e8f.jpg";
-      // if (image) {
-      //   const formData = new FormData();
-      //   formData.append("file", image);
-      //   formData.append("upload_preset", "your_cloudinary_preset"); // Replace with your Cloudinary preset
-
-      //   const uploadResponse = await fetch(
-      //     "https://api.cloudinary.com/v1_1/your_cloud_name/image/upload", // Replace with your Cloudinary cloud name
-      //     {
-      //       method: "POST",
-      //       body: formData,
-      //     }
-      //   );
-
-      //   const uploadedImage = await uploadResponse.json();
-      //   imageUrl = uploadedImage.secure_url;
-      // }
 
       // Then save movie data
       await fetch("/api/movies", {
@@ -48,8 +31,8 @@ export default function AddMoviePage() {
         },
         body: JSON.stringify({
           title,
-          year: parseInt(year),
-          imageUrl,
+          publishingYear: parseInt(year),
+          posterUrl: imageUrl,
           userId: session.user.id,
         }),
       });
@@ -63,62 +46,109 @@ export default function AddMoviePage() {
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-6">Add New Movie</h1>
+    <div className="min-h-screen flex items-center justify-center p-4">
+      <div className="max-w-5xl w-full bg-white rounded-xl shadow-2xl overflow-hidden">
+        <div className="flex flex-col md:flex-row h-[600px]">
+          <div className="w-full md:w-1/2 p-6 bg-red-50 border-r border-gray-200">
+            <div className="h-full w-full flex items-center justify-center shadow-lg rounded-lg border-2 border-gray-300 overflow-hidden bg-gray-200 p-4">
+              {image ? (
+                <img
+                  src={URL.createObjectURL(image)}
+                  alt="Movie poster preview"
+                  className="h-full w-full object-cover rounded-lg"
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center">
+                  <span className="text-gray-500">No image selected</span>
+                </div>
+              )}
+            </div>
+          </div>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className="block text-gray-700 mb-2">Movie Title</label>
-          <input
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            className="w-full p-2 border rounded"
-            required
-          />
-        </div>
+          <div className="w-full md:w-1/2 p-8 bg-[#132b34] flex flex-col">
+            <h1 className="text-3xl font-bold mb-8">Add New Movie</h1>
 
-        <div>
-          <label className="block text-gray-700 mb-2">Release Year</label>
-          <input
-            type="number"
-            value={year}
-            onChange={(e) => setYear(e.target.value)}
-            className="w-full p-2 border rounded"
-            min="1900"
-            max={new Date().getFullYear()}
-            required
-          />
-        </div>
+            <form onSubmit={handleSubmit} className="flex-1 flex flex-col">
+              <div className="space-y-6 flex-1">
+                <div className="relative">
+                  <input
+                    id="title"
+                    type="text"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    className="block p-4 w-full text-white bg-[#224957] rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent peer"
+                    placeholder=" "
+                    required
+                    minLength={3}
+                  />
+                  <label
+                    htmlFor="title"
+                    className="absolute text-gray-300 duration-300 transform -translate-y-4 scale-75 top-4 mb-2 z-10 origin-[0] left-4 peer-focus:left-4 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4"
+                  >
+                    Title
+                  </label>
+                </div>
 
-        <div>
-          <label className="block text-gray-700 mb-2">Movie Poster</label>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) => setImage(e.target.files?.[0] || null)}
-            className="w-full p-2 border rounded"
-          />
-        </div>
+                <div className="relative">
+                  <input
+                    id="year"
+                    type="number"
+                    value={year}
+                    onChange={(e) => setYear(e.target.value)}
+                    className="block p-4 w-full text-white bg-[#224957] rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent peer"
+                    placeholder=" "
+                    min="1900"
+                    max={new Date().getFullYear()}
+                    required
+                  />
+                  <label
+                    htmlFor="year"
+                    className="absolute text-gray-300 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] left-4 peer-focus:left-4 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4"
+                  >
+                    Publishing Year
+                  </label>
+                </div>
 
-        <div className="flex justify-end space-x-4">
-          <button
-            type="button"
-            onClick={() => router.push("/dashboard")}
-            className="px-4 py-2 border rounded hover:bg-gray-100"
-            disabled={isSubmitting}
-          >
-            Cancel
-          </button>
-          <button
-            type="submit"
-            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50"
-            disabled={isSubmitting}
-          >
-            {isSubmitting ? "Adding..." : "Add Movie"}
-          </button>
+                <div className="relative">
+                  <input
+                    type="file"
+                    id="poster"
+                    accept="image/*"
+                    onChange={(e) => setImage(e.target.files?.[0] || null)}
+                    className="hidden"
+                  />
+                  <label
+                    htmlFor="poster"
+                    className="block p-4 w-full text-white bg-[#224957] rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent cursor-pointer"
+                  >
+                    {image ? image.name : "Select Movie Poster"}
+                  </label>
+                </div>
+              </div>
+
+              <div className="mt-auto pt-8">
+                <div className="flex space-x-4">
+                  <button
+                    type="button"
+                    onClick={() => router.push("/dashboard")}
+                    className="cursor-pointer flex-1 px-6 py-3 border border-white text-white rounded-lg hover:border-[#2BD17E] hover:text-[#2BD17E] text-lg font-medium transition-colors"
+                    disabled={isSubmitting}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="cursor-pointer flex-1 px-6 py-3 bg-[#2BD17E] text-white rounded-lg hover:bg-emerald-600 text-lg font-medium transition-colors disabled:opacity-50"
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? "Adding..." : "Add Movie"}
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
         </div>
-      </form>
+      </div>
     </div>
   );
 }

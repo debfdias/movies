@@ -11,12 +11,12 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json();
-    const { title, year, imageUrl, userId } = body;
+    const { title, publishingYear, imageUrl, userId } = body;
 
     const movie = await prisma.movie.create({
       data: {
         title,
-        publishingYear: year,
+        publishingYear,
         posterUrl: imageUrl,
         userId,
       },
