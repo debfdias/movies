@@ -70,23 +70,37 @@ export default function DashboardPage() {
             <p className="text-gray-500">No movies added yet</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {movies.map((movie) => (
               <div
                 key={movie.id}
-                className="bg-white rounded-lg shadow overflow-hidden"
                 onClick={() => router.push(`/movies/${movie.id}`)}
+                className="group cursor-pointer transition-all duration-200 hover:scale-105"
               >
-                {movie.posterUrl && (
-                  <img
-                    src={movie.posterUrl}
-                    alt={movie.title}
-                    className="w-full h-48 object-cover"
-                  />
-                )}
-                <div className="p-4">
-                  <h3 className="font-semibold text-lg">{movie.title}</h3>
-                  <p className="text-gray-500">{movie.year}</p>
+                {/* Card container with 4:5 aspect ratio */}
+                <div className="relative aspect-[4/5] rounded-lg overflow-hidden shadow-lg bg-gray-100">
+                  {movie.posterUrl ? (
+                    <img
+                      src={movie.posterUrl}
+                      alt={movie.title}
+                      className="absolute inset-0 w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="absolute inset-0 flex items-center justify-center bg-gray-200">
+                      <span className="text-gray-500">No Image</span>
+                    </div>
+                  )}
+
+                  {/* Gradient overlay at bottom */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                </div>
+
+                {/* Text info below card */}
+                <div className="mt-2">
+                  <h3 className="font-semibold text-lg truncate">
+                    {movie.title}
+                  </h3>
+                  <p className="text-gray-600">{movie.year}</p>
                 </div>
               </div>
             ))}

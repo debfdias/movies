@@ -5,8 +5,10 @@ import { authOptions } from "@/lib/auth";
 
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const id = (await params).id;
+
   try {
     const session = await getServerSession(authOptions);
 
@@ -16,7 +18,7 @@ export async function GET(
 
     const movie = await prisma.movie.findUnique({
       where: {
-        id: params.id, // Directly access params.id
+        id: id, // Directly access params.id
         userId: session.user.id,
       },
     });
@@ -34,8 +36,10 @@ export async function GET(
 
 export async function PUT(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const id = (await params).id;
+
   try {
     const session = await getServerSession(authOptions);
 
@@ -48,7 +52,7 @@ export async function PUT(
 
     const movie = await prisma.movie.update({
       where: {
-        id: params.id, // Directly access params.id
+        id: id, // Directly access params.id
         userId: session.user.id,
       },
       data: {

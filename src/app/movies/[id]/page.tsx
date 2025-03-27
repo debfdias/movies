@@ -48,8 +48,7 @@ export default function EditMoviePage({
         body: JSON.stringify({
           title,
           publishingYear: parseInt(year),
-          posterUrl:
-            "https://musicart.xboxlive.com/7/1d400700-0000-0000-0000-000000000002/504/image.jpg",
+          posterUrl: "",
         }),
       });
 
