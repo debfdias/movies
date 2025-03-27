@@ -3,11 +3,15 @@
 import { signOut, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import MovieCard from "@/components/MovieCard";
+import { FiLogOut } from "react-icons/fi";
+import { FiPlus } from "react-icons/fi";
+import MovieCardSkeleton from "@/components/MovieCardSkeleton";
 
 type Movie = {
   id: string;
   title: string;
-  year: number;
+  publishingYear: number;
   posterUrl: string | null;
 };
 
@@ -15,6 +19,7 @@ export default function DashboardPage() {
   const { status } = useSession();
   const [movies, setMovies] = useState<Movie[]>([]);
   const [loading, setLoading] = useState(true);
+  const { data: session } = useSession();
   const router = useRouter();
 
   useEffect(() => {
@@ -41,70 +46,56 @@ export default function DashboardPage() {
     }
   }, [status]);
 
-  if (status === "loading" || status === "unauthenticated" || loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        Loading...
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen p-8">
       <div className="max-w-6xl mx-auto">
-        <button style={{ marginRight: 10 }} onClick={() => signOut()}>
-          Sign Out
-        </button>
-        <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold">Your Movies</h1>
+        <div className="flex justify-between items-center mb-16">
+          <h1 className="text-md font-light">
+            Welcome, {session?.user?.email}
+          </h1>
           <button
-            onClick={() => router.push("/movies/create")}
-            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+            onClick={() => signOut()}
+            className="flex items-center cursor-pointer gap-4 hover:text-[#2BD17E]"
           >
-            Add New Movie
+            Logout
+            <FiLogOut className="w-5 h-5" />
           </button>
         </div>
 
-        {movies.length === 0 ? (
-          <div className="text-center py-12">
-            <p className="text-gray-500">No movies added yet</p>
+        {movies.length === 0 && !loading ? (
+          <div className="flex flex-col items-center justify-center h-[70vh] -mt-16">
+            <h2 className="text-5xl font-bold mb-8 text-center">
+              Your movie list is empty
+            </h2>
+            <button
+              onClick={() => router.push("/movies/create")}
+              className="cursor-pointer px-6 py-3 bg-[#2BD17E] text-white rounded-lg hover:bg-[#25b871] text-lg font-semibold transition-colors"
+            >
+              Add a new movie
+            </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {movies.map((movie) => (
-              <div
-                key={movie.id}
-                onClick={() => router.push(`/movies/${movie.id}`)}
-                className="group cursor-pointer transition-all duration-200 hover:scale-105"
+          <>
+            <div className="flex gap-8 items-center mb-24">
+              <div className="text-4xl font-bold">My movies</div>
+              <button
+                onClick={() => router.push("/movies/create")}
+                className="flex items-center gap-2 cursor-pointer px-4 py-2 bg-[#2BD17E] text-white rounded-md hover:bg-[#25b871] text-md font-semibold transition-colors"
               >
-                {/* Card container with 4:5 aspect ratio */}
-                <div className="relative aspect-[4/5] rounded-lg overflow-hidden shadow-lg bg-gray-100">
-                  {movie.posterUrl ? (
-                    <img
-                      src={movie.posterUrl}
-                      alt={movie.title}
-                      className="absolute inset-0 w-full h-full object-cover"
-                    />
-                  ) : (
-                    <div className="absolute inset-0 flex items-center justify-center bg-gray-200">
-                      <span className="text-gray-500">No Image</span>
-                    </div>
-                  )}
-
-                  {/* Gradient overlay at bottom */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                </div>
-
-                {/* Text info below card */}
-                <div className="mt-2">
-                  <h3 className="font-semibold text-lg truncate">
-                    {movie.title}
-                  </h3>
-                  <p className="text-gray-600">{movie.year}</p>
-                </div>
-              </div>
-            ))}
-          </div>
+                New movie
+                <FiPlus className="w-5 h-5" />
+              </button>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+              {loading
+                ? Array.from({ length: 8 }).map((_, index) => (
+                    <MovieCardSkeleton key={index} />
+                  ))
+                : movies.map((movie) => (
+                    <MovieCard key={movie.id} movie={movie} />
+                  ))}
+            </div>
+          </>
         )}
       </div>
     </div>
