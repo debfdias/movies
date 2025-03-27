@@ -85,7 +85,6 @@ export default function EditMoviePage({
                     fill
                     className="object-cover rounded-lg"
                     priority
-                    unoptimized={true}
                   />
                 </div>
               ) : (
