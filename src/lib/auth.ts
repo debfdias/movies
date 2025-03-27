@@ -1,7 +1,19 @@
-import { prisma } from "@/lib/prisma";
-import { compare, hash } from "bcryptjs";
-import type { NextAuthOptions } from "next-auth";
+import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import { prisma } from "@/lib/prisma";
+import { compare } from "bcryptjs";
+
+// Add this interface
+declare module "next-auth" {
+  interface User {
+    id: string;
+    email: string;
+    randomKey: string;
+  }
+  interface Session {
+    user: User;
+  }
+}
 
 export const authOptions: NextAuthOptions = {
   session: {
@@ -11,11 +23,7 @@ export const authOptions: NextAuthOptions = {
     CredentialsProvider({
       name: "Sign in",
       credentials: {
-        email: {
-          label: "Email",
-          type: "email",
-          placeholder: "example@example.com",
-        },
+        email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
@@ -24,29 +32,10 @@ export const authOptions: NextAuthOptions = {
         }
 
         const user = await prisma.user.findUnique({
-          where: {
-            email: credentials.email,
-          },
+          where: { email: credentials.email },
         });
 
-        // If user doesn't exist, create a new one
-        if (!user) {
-          const hashedPassword = await hash(credentials.password, 12);
-          const newUser = await prisma.user.create({
-            data: {
-              email: credentials.email,
-              password: hashedPassword,
-            },
-          });
-          return {
-            id: newUser.id,
-            email: newUser.email,
-            randomKey: "Some random Key",
-          };
-        }
-
-        // If user exists, verify password
-        if (!(await compare(credentials.password, user.password))) {
+        if (!user || !(await compare(credentials.password, user.password))) {
           return null;
         }
 
@@ -60,7 +49,6 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     session: ({ session, token }) => {
-      console.log("Session Callback", { session, token });
       return {
         ...session,
         user: {
@@ -71,17 +59,15 @@ export const authOptions: NextAuthOptions = {
       };
     },
     jwt: ({ token, user }) => {
-      console.log("JWT Callback", { token, user });
       if (user) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const u = user as unknown as any;
         return {
           ...token,
-          id: u.id,
-          randomKey: u.randomKey,
+          id: user.id,
+          randomKey: user.randomKey,
         };
       }
       return token;
     },
   },
+  secret: process.env.NEXTAUTH_SECRET,
 };
